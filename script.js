@@ -25,12 +25,7 @@ images.forEach((image, index) => {
     const thumb = document.createElement('img');
     thumb.src = image.src;
     thumb.dataset.index = index; // Tároljuk az indexet a thumbnailen
-    thumb.addEventListener('click', () => {
-        showSlide(index);
-        if (!isPaused) {
-            speakText(images[index].text);
-        }
-    });
+    thumb.addEventListener('click', () => showSlide(index));
     thumbnailsContainer.appendChild(thumb);
 });
 
@@ -58,9 +53,7 @@ function showSlide(index) {
     currentImage.src = images[currentIndex].src;
     currentText.innerHTML = images[currentIndex].text;
     updateThumbnails();
-    if (!isPaused) {
-        speakText(images[currentIndex].text);
-    }
+    speakText(images[currentIndex].text);
 }
 
 // Magyar férfi hang beállítása
@@ -106,7 +99,6 @@ pauseButton.addEventListener('click', () => {
     pauseButton.classList.add('disabled'); // Pause gomb állapotának módosítása
     resumeButton.classList.remove('disabled'); // Resume gomb engedélyezése
     resetButton.classList.add('disabled'); // Reset gomb letiltása
-    speechSynthesis.cancel(); // A felolvasás megszakítása
 });
 
 // Resume funkció
@@ -133,20 +125,8 @@ resetButton.addEventListener('click', () => {
     }
 });
 
-nextButton.addEventListener('click', () => {
-    nextSlide();
-    if (!isPaused) {
-        speakText(images[currentIndex].text);
-    }
-});
-
-previousButton.addEventListener('click', () => {
-    previousSlide();
-    if (!isPaused) {
-        speakText(images[currentIndex].text);
-    }
-});
-
+nextButton.addEventListener('click', nextSlide);
+previousButton.addEventListener('click', previousSlide);
 homeButton.addEventListener('click', () => {
     // Itt visszairányíthatod a főoldalra
     window.location.href = 'index.html';
