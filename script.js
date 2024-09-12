@@ -1,6 +1,3 @@
-console.log("A script.js fájl sikeresen betöltődött.");
-
-
 const images = [
     { src: 'image1.jpg', text: 'Első kép leírása.' },
     { src: 'image2.jpg', text: 'Második kép leírása.' },
