@@ -154,4 +154,3 @@ homeButton.addEventListener('click', () => {
 
 // Induláskor az első kép megjelenítése
 showSlide(0);
-Módosítások:
