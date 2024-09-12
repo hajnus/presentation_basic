@@ -1,7 +1,7 @@
 console.log("A script.js fájl sikeresen betöltődött.");
 
 // Adatok placeholder
-const images = Array.from({ length: 45 }, (_, i) => `image${i + 1}.jpg`);
+const images = Array.from({length: 45}, () => 'https://via.placeholder.com/1600x900'); // Egy alapértelmezett kép
 const texts = Array.from({ length: 45 }, (_, i) => `Text for image ${i + 1}`);
 
 // Elemenek
