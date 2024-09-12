@@ -93,20 +93,20 @@ function previousSlide() {
     }
 }
 
-// Pause funkció (Stop felirat)
+// Pause funkció (Pause felirat)
 pauseButton.addEventListener('click', () => {
     isPaused = true;
-    pauseButton.classList.add('disabled'); // Stop gomb állapotának módosítása
-    resumeButton.classList.remove('disabled'); // Play gomb engedélyezése
+    pauseButton.classList.add('disabled'); // Pause gomb állapotának módosítása
+    resumeButton.classList.remove('disabled'); // Resume gomb engedélyezése
     resetButton.classList.add('disabled'); // Reset gomb letiltása
     speechSynthesis.cancel(); // A felolvasás megszakítása
 });
 
-// Resume funkció (Play felirat)
+// Resume funkció (Resume felirat)
 resumeButton.addEventListener('click', () => {
     isPaused = false;
-    pauseButton.classList.remove('disabled'); // Stop gomb engedélyezése
-    resumeButton.classList.add('disabled'); // Play gomb letiltása
+    pauseButton.classList.remove('disabled'); // Pause gomb engedélyezése
+    resumeButton.classList.add('disabled'); // Resume gomb letiltása
     resetButton.classList.remove('disabled'); // Reset gomb engedélyezése
     if (!isSpeaking) {
         nextSlide(); // Folytatás a következő képpel
@@ -118,8 +118,8 @@ resetButton.addEventListener('click', () => {
     isPaused = false;
     currentIndex = 0;
     showSlide(currentIndex);
-    pauseButton.classList.remove('disabled'); // Stop gomb engedélyezése
-    resumeButton.classList.add('disabled'); // Play gomb letiltása
+    pauseButton.classList.remove('disabled'); // Pause gomb engedélyezése
+    resumeButton.classList.add('disabled'); // Resume gomb letiltása
     resetButton.classList.add('disabled'); // Reset gomb állapotának módosítása
     if (!isSpeaking) {
         nextSlide(); // Folytatás a következő képpel a reset után
