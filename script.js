@@ -25,7 +25,12 @@ images.forEach((image, index) => {
     const thumb = document.createElement('img');
     thumb.src = image.src;
     thumb.dataset.index = index; // Tároljuk az indexet a thumbnailen
-    thumb.addEventListener('click', () => showSlide(index));
+    thumb.addEventListener('click', () => {
+        showSlide(index);
+        if (!isPaused) {
+            speakText(images[index].text);
+        }
+    });
     thumbnailsContainer.appendChild(thumb);
 });
 
@@ -53,15 +58,17 @@ function showSlide(index) {
     currentImage.src = images[currentIndex].src;
     currentText.innerHTML = images[currentIndex].text;
     updateThumbnails();
-    speakText(images[currentIndex].text);
+    if (!isPaused) {
+        speakText(images[currentIndex].text);
+    }
 }
 
 // Magyar férfi hang beállítása
-function speakText(text) {
+async function speakText(text) {
     const utterance = new SpeechSynthesisUtterance(text.replace(/<[^>]+>/g, '')); // eltávolítjuk a HTML tageket
     utterance.lang = 'hu-HU';
 
-    const voices = speechSynthesis.getVoices();
+    const voices = await getVoice();
     const maleVoice = voices.find(voice => voice.lang === 'hu-HU' && voice.name.toLowerCase().includes('male'));
 
     if (maleVoice) {
@@ -77,6 +84,17 @@ function speakText(text) {
 
     isSpeaking = true;
     speechSynthesis.speak(utterance);
+}
+
+function getVoice() {
+    return new Promise(resolve => {
+        const voices = speechSynthesis.getVoices();
+        if (voices.length) {
+            resolve(voices);
+        } else {
+            speechSynthesis.onvoiceschanged = () => resolve(speechSynthesis.getVoices());
+        }
+    });
 }
 
 function nextSlide() {
@@ -99,6 +117,7 @@ pauseButton.addEventListener('click', () => {
     pauseButton.classList.add('disabled'); // Pause gomb állapotának módosítása
     resumeButton.classList.remove('disabled'); // Resume gomb engedélyezése
     resetButton.classList.add('disabled'); // Reset gomb letiltása
+    speechSynthesis.cancel(); // A felolvasás megszakítása
 });
 
 // Resume funkció
