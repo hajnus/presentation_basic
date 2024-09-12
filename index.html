@@ -52,6 +52,11 @@
             margin: 20px 0;
         }
 
+        .highlight {
+            font-weight: bold;
+            color: red;
+        }
+
         button {
             border: none;
             border-radius: 15px; /* Kerekített sarkok 15px */
@@ -59,7 +64,7 @@
             font-size: 16px;
             cursor: pointer;
             margin: 5px;
-            background-color: lightgreen;
+            background-color: cyan;
             color: black;
         }
 
@@ -77,12 +82,12 @@
 <body>
     <div id="slideshow">
         <div class="image-container">
-            <img id="currentImage" src="" alt="Slideshow Image">
+            <img id="currentImage" src="placeholder-image.jpg" alt="Slideshow Image">
         </div>
-        <p id="currentText"></p>
+        <p id="currentText">Placeholder text goes here...</p>
         <div class="thumbnails-wrapper">
             <div class="thumbnails" id="thumbnails">
-                <!-- Thumbnail képek ide kerülnek -->
+                <!-- Thumbnails will be inserted here -->
             </div>
         </div>
         <div class="controls">
@@ -94,8 +99,6 @@
             <button id="home">Home</button>
         </div>
     </div>
-
-    <script src="script.js">
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
