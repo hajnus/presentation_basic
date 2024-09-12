@@ -1,6 +1,3 @@
-console.log("A script.js fájl sikeresen betöltődött.");
-
-
 // Generáljunk 45 slide-ot, egyelőre ugyanazokkal a placeholder képekkel és szövegekkel
 const images = Array.from({ length: 45 }, (_, i) => ({
     src: `https://via.placeholder.com/1600x900?text=Kép+${i+1}`,
@@ -14,6 +11,7 @@ let isSpeaking = false; // Azt jelzi, hogy a szöveg felolvasása folyamatban va
 const currentImage = document.getElementById('currentImage');
 const currentText = document.getElementById('currentText');
 const thumbnailsContainer = document.getElementById('thumbnails');
+const pauseResumeButton = document.getElementById('pause');
 
 // Thumbnails generálása
 images.forEach((image, index) => {
@@ -85,17 +83,19 @@ function previousSlide() {
     showSlide(currentIndex);
 }
 
-// Eseménykezelők a gombokra
-document.getElementById('nextImage').addEventListener('click', nextSlide);
-document.getElementById('previousImage').addEventListener('click', previousSlide);
-document.getElementById('pause').addEventListener('click', () => {
+// Pause/Resume funkció
+pauseResumeButton.addEventListener('click', () => {
     isPaused = !isPaused;
-    if (isPaused) {
-        speechSynthesis.cancel();
-    } else {
+    pauseResumeButton.textContent = isPaused ? 'Resume' : 'Pause'; // Gomb szövegének frissítése
+    if (!isPaused) {
         nextSlide();
+    } else {
+        speechSynthesis.cancel(); // A felolvasás megszakítása szünetnél
     }
 });
+
+document.getElementById('nextImage').addEventListener('click', nextSlide);
+document.getElementById('previousImage').addEventListener('click', previousSlide);
 document.getElementById('restart').addEventListener('click', () => {
     showSlide(0);
 });
