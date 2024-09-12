@@ -1,8 +1,46 @@
 const images = [
-    { src: 'image1.jpg', text: 'Első kép leírása.' },
-    { src: 'image2.jpg', text: 'Második kép leírása.' },
-    { src: 'image3.jpg', text: 'Harmadik kép leírása.' },
+    { src: 'images/image1.jpg', text: 'Első kép leírása.' },
+    { src: 'images/image2.jpg', text: 'Második kép leírása.' },
+    { src: 'images/image3.jpg', text: 'Harmadik kép leírása.' },
 ];
+Helyi fejlesztés:
+Ha a képeket egy helyi szerveren próbálod betölteni (pl. localhost), győződj meg róla, hogy a szervered megfelelően fut, és elérhetőek a fájlok.
+
+Minta fájlszerkezet:
+markdown
+Copy code
+project-folder/
+│
+├── index.html
+├── script.js
+└── images/
+    ├── image1.jpg
+    ├── image2.jpg
+    └── image3.jpg
+Ebben az esetben az index.html és a script.js fájlok azonos mappában vannak, és az images mappában találhatóak a képek. Az elérési út images/image1.jpg, images/image2.jpg, stb.
+
+Ellenőrizd ezeket a pontokat, és ha így sem működik, írd meg a konkrét hibaüzenetet vagy a pontos fájlszerkezetet, hogy további segítséget tudjak nyújtani.
+
+
+
+
+
+
+You said:
+nincsenek képek, hanem 45 képhelyettesítőt csak mutatóba most beillesztünk
+ChatGPT said:
+ChatGPT
+Ha jelenleg nincsenek tényleges képek, de szeretnél 45 képhelyettesítőt használni (pl. placeholder képeket), akkor beilleszthetsz egy általánosan használt placeholder szolgáltatást, például a placekitten-t, ami véletlenszerű macskaképeket ad megadott méretben.
+
+Az alábbi kódban 45 képhelyettesítőt használunk, és minden képhez a placekitten.com szolgáltatás ad vissza egy 800x600 méretű macskaképet. Ezekhez képzelt leírásokat is adtam, hogy a szöveg felolvasása működjön.
+
+Frissített kód a placeholder képekkel
+javascript
+Copy code
+const images = Array.from({ length: 45 }, (_, index) => ({
+    src: `https://placekitten.com/800/600?image=${index}`, // Kép helyettesítő URL
+    text: `Kép ${index + 1} leírása.`, // Minden képhez tartozik egy leírás
+}));
 
 let currentIndex = 0;
 let isPaused = false;
