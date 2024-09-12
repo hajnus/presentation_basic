@@ -55,14 +55,16 @@
             font-size: 16px;
             cursor: pointer;
             margin: 5px;
+            background-color: lightgray;
+            color: black;
         }
-        button:disabled {
+        button.disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
-        .disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        button.active {
+            background-color: black;
+            color: white;
         }
     </style>
 </head>
@@ -82,9 +84,9 @@
             <button id="nextTask">Next Task</button>
             <button id="previousImage">Previous</button>
             <button id="nextImage">Next</button>
-            <button id="pause">Pause</button>
-            <button id="resume" class="disabled">Resume</button> <!-- Resume gomb -->
-            <button id="restart" class="disabled">Restart</button> <!-- Reset gomb -->
+            <button id="stop">Stop</button>
+            <button id="play" class="disabled">Play</button> <!-- Play gomb -->
+            <button id="reset" class="disabled">Reset</button> <!-- Reset gomb -->
             <button id="home">Home</button>
         </div>
     </div>
