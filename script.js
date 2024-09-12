@@ -1,108 +1,83 @@
-console.log("A script.js fájl sikeresen betöltődött.");
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("A script.js fájl sikeresen betöltődött.");
 
-        const images = Array.from({ length: 45 }, (_, index) => ({
-            src: `https://placekitten.com/800/600?image=${index}`, // Kép helyettesítő URL
-            text: `Kép ${index + 1} leírása.`, // Minden képhez tartozik egy leírás
-        }));
+    const images = Array.from({length: 45}, (_, i) => `path/to/image${i+1}.jpg`); // Add image paths
+    const texts = Array.from({length: 45}, (_, i) => `Szöveg a ${i+1}. képhez.`); // Add texts
 
-        let currentIndex = 0;
-        let isPaused = false;
-        let speechSynthesisUtterance = null;
-        const imageElement = document.getElementById('currentImage');
-        const textElement = document.getElementById('currentText');
-        const thumbnailsElement = document.getElementById('thumbnails');
+    let currentIndex = 0;
+    let isPaused = false;
+    let timer;
 
-        // Beállítjuk a kezdeti képet és szöveget
-        function updateSlide(index) {
-            if (index < 0 || index >= images.length) return;
-            currentIndex = index;
-            imageElement.src = images[index].src;
-            textElement.textContent = images[index].text;
-            updateThumbnails();
-            readText(images[index].text);
-        }
+    const imageElement = document.getElementById("currentImage");
+    const textElement = document.getElementById("currentText");
+    const previousButton = document.getElementById("previousImage");
+    const nextButton = document.getElementById("nextImage");
+    const pauseButton = document.getElementById("pause");
+    const resumeButton = document.getElementById("resume");
+    const resetButton = document.getElementById("reset");
+    const homeButton = document.getElementById("home");
 
-        // Szöveg felolvasása
-        function readText(text) {
-            if (speechSynthesisUtterance) {
-                speechSynthesis.cancel(); // Ha folyamatban van egy felolvasás, azt megszakítjuk
+    function showImageAndText(index) {
+        if (index < 0 || index >= images.length) return;
+
+        imageElement.src = images[index];
+        textElement.textContent = texts[index];
+
+        const utterance = new SpeechSynthesisUtterance(texts[index]);
+        speechSynthesis.speak(utterance);
+
+        utterance.onend = () => {
+            if (!isPaused) {
+                nextImage();
             }
+        };
+    }
 
-            speechSynthesisUtterance = new SpeechSynthesisUtterance(text);
-            speechSynthesisUtterance.lang = 'hu-HU';
+    function nextImage() {
+        currentIndex = (currentIndex + 1) % images.length;
+        showImageAndText(currentIndex);
+    }
 
-            speechSynthesisUtterance.onend = function() {
-                if (!isPaused) {
-                    nextImage();
-                }
-            };
+    function previousImage() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        showImageAndText(currentIndex);
+    }
 
-            speechSynthesis.speak(speechSynthesisUtterance);
-        }
+    function pauseSlideshow() {
+        isPaused = true;
+        clearTimeout(timer);
+        // Update button states
+        pauseButton.classList.add("disabled");
+        resumeButton.classList.remove("disabled");
+    }
 
-        // Következő kép
-        function nextImage() {
-            if (currentIndex < images.length - 1) {
-                updateSlide(currentIndex + 1);
-            }
-        }
+    function resumeSlideshow() {
+        isPaused = false;
+        nextImage(); // Continue with the next image
+        // Update button states
+        pauseButton.classList.remove("disabled");
+        resumeButton.classList.add("disabled");
+    }
 
-        // Előző kép
-        function previousImage() {
-            if (currentIndex > 0) {
-                updateSlide(currentIndex - 1);
-            }
-        }
+    function resetSlideshow() {
+        currentIndex = 0;
+        showImageAndText(currentIndex);
+        isPaused = false;
+        pauseButton.classList.remove("disabled");
+        resumeButton.classList.add("disabled");
+    }
 
-        // Pause, resume, reset funkciók
-        document.getElementById('pause').addEventListener('click', function() {
-            isPaused = true;
-            speechSynthesis.pause();
-        });
+    function goHome() {
+        window.location.href = "index.html"; // Or whatever your home page is
+    }
 
-        document.getElementById('resume').addEventListener('click', function() {
-            isPaused = false;
-            speechSynthesis.resume();
-        });
+    previousButton.addEventListener("click", previousImage);
+    nextButton.addEventListener("click", nextImage);
+    pauseButton.addEventListener("click", pauseSlideshow);
+    resumeButton.addEventListener("click", resumeSlideshow);
+    resetButton.addEventListener("click", resetSlideshow);
+    homeButton.addEventListener("click", goHome);
 
-        document.getElementById('reset').addEventListener('click', function() {
-            isPaused = false;
-            updateSlide(0);
-        });
-
-        document.getElementById('previousImage').addEventListener('click', function() {
-            isPaused = false;
-            previousImage();
-        });
-
-        document.getElementById('nextImage').addEventListener('click', function() {
-            isPaused = false;
-            nextImage();
-        });
-
-        // Thumbnail kattintások
-        function createThumbnail(image, index) {
-            const thumbnail = document.createElement('img');
-            thumbnail.src = image.src;
-            thumbnail.addEventListener('click', function() {
-                isPaused = false;
-                updateSlide(index);
-            });
-            thumbnailsElement.appendChild(thumbnail);
-        }
-
-        // Frissíti a thumbnailokat
-        function updateThumbnails() {
-            const thumbnails = document.querySelectorAll('.thumbnails img');
-            thumbnails.forEach((thumb, index) => {
-                thumb.classList.toggle('active', index === currentIndex);
-            });
-        }
-
-        // Thumbnail képek létrehozása
-        images.forEach((image, index) => {
-            createThumbnail(image, index);
-        });
-
-        // Induláskor az első kép megjelenítése
-        updateSlide(currentIndex);
+    // Initialize with the first image and text
+    showImageAndText(currentIndex);
+});
