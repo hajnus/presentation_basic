@@ -26,10 +26,7 @@ images.forEach((image, index) => {
     thumb.src = image.src;
     thumb.dataset.index = index; // Tároljuk az indexet a thumbnailen
     thumb.addEventListener('click', () => {
-        showSlide(index);
-        if (!isPaused) {
-            speakText(images[index].text);
-        }
+        handleNavigation(index);
     });
     thumbnailsContainer.appendChild(thumb);
 });
@@ -111,6 +108,16 @@ function previousSlide() {
     }
 }
 
+function handleNavigation(index) {
+    if (isSpeaking) {
+        speechSynthesis.cancel(); // Megakadályozzuk a szöveg további felolvasását
+    }
+    showSlide(index);
+    if (!isPaused) {
+        speakText(images[index].text); // Az új kép szövegének felolvasása
+    }
+}
+
 // Pause funkció
 pauseButton.addEventListener('click', () => {
     isPaused = true;
@@ -127,7 +134,7 @@ resumeButton.addEventListener('click', () => {
     resumeButton.classList.add('disabled'); // Resume gomb letiltása
     resetButton.classList.remove('disabled'); // Reset gomb engedélyezése
     if (!isSpeaking) {
-        nextSlide(); // Folytatás a következő képpel
+        speakText(images[currentIndex].text); // Az aktuális kép szövegének felolvasása
     }
 });
 
@@ -144,10 +151,30 @@ resetButton.addEventListener('click', () => {
     }
 });
 
-nextButton.addEventListener('click', nextSlide);
-previousButton.addEventListener('click', previousSlide);
+nextButton.addEventListener('click', () => {
+    if (isSpeaking) {
+        speechSynthesis.cancel(); // Megakadályozzuk a szöveg további felolvasását
+    }
+    nextSlide();
+    if (!isPaused) {
+        speakText(images[currentIndex].text); // Az aktuális kép szövegének felolvasása
+    }
+});
+
+previousButton.addEventListener('click', () => {
+    if (isSpeaking) {
+        speechSynthesis.cancel(); // Megakadályozzuk a szöveg további felolvasását
+    }
+    previousSlide();
+    if (!isPaused) {
+        speakText(images[currentIndex].text); // Az aktuális kép szövegének felolvasása
+    }
+});
+
 homeButton.addEventListener('click', () => {
-    // Itt visszairányíthatod a főoldalra
+    if (isSpeaking) {
+        speechSynthesis.cancel(); // Megakadályozzuk a szöveg további felolvasását
+    }
     window.location.href = 'index.html';
 });
 
