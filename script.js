@@ -26,7 +26,10 @@ images.forEach((image, index) => {
     thumb.src = image.src;
     thumb.dataset.index = index; // Tároljuk az indexet a thumbnailen
     thumb.addEventListener('click', () => {
-        handleNavigation(index);
+        showSlide(index);
+        if (!isPaused) {
+            speakText(images[index].text);
+        }
     });
     thumbnailsContainer.appendChild(thumb);
 });
@@ -60,6 +63,7 @@ function showSlide(index) {
     }
 }
 
+// Magyar férfi hang beállítása
 async function speakText(text) {
     const utterance = new SpeechSynthesisUtterance(text.replace(/<[^>]+>/g, '')); // eltávolítjuk a HTML tageket
     utterance.lang = 'hu-HU';
@@ -107,25 +111,13 @@ function previousSlide() {
     }
 }
 
-function handleNavigation(index) {
-    if (isSpeaking) {
-        speechSynthesis.cancel(); // Megakadályozzuk a szöveg további felolvasását
-    }
-    showSlide(index);
-    if (!isPaused) {
-        speakText(images[index].text); // Az új kép szövegének felolvasása
-    }
-}
-
 // Pause funkció
 pauseButton.addEventListener('click', () => {
-    if (isSpeaking) {
-        speechSynthesis.cancel(); // Megakadályozzuk a szöveg további felolvasását
-    }
     isPaused = true;
     pauseButton.classList.add('disabled'); // Pause gomb állapotának módosítása
     resumeButton.classList.remove('disabled'); // Resume gomb engedélyezése
     resetButton.classList.add('disabled'); // Reset gomb letiltása
+    speechSynthesis.cancel(); // A felolvasás megszakítása
 });
 
 // Resume funkció
@@ -141,9 +133,6 @@ resumeButton.addEventListener('click', () => {
 
 // Reset funkció
 resetButton.addEventListener('click', () => {
-    if (isSpeaking) {
-        speechSynthesis.cancel(); // Megakadályozzuk a szöveg további felolvasását
-    }
     isPaused = false;
     currentIndex = 0;
     showSlide(currentIndex);
@@ -155,30 +144,10 @@ resetButton.addEventListener('click', () => {
     }
 });
 
-nextButton.addEventListener('click', () => {
-    if (isSpeaking) {
-        speechSynthesis.cancel(); // Megakadályozzuk a szöveg további felolvasását
-    }
-    nextSlide();
-    if (!isPaused) {
-        speakText(images[currentIndex].text);
-    }
-});
-
-previousButton.addEventListener('click', () => {
-    if (isSpeaking) {
-        speechSynthesis.cancel(); // Megakadályozzuk a szöveg további felolvasását
-    }
-    previousSlide();
-    if (!isPaused) {
-        speakText(images[currentIndex].text);
-    }
-});
-
+nextButton.addEventListener('click', nextSlide);
+previousButton.addEventListener('click', previousSlide);
 homeButton.addEventListener('click', () => {
-    if (isSpeaking) {
-        speechSynthesis.cancel(); // Megakadályozzuk a szöveg további felolvasását
-    }
+    // Itt visszairányíthatod a főoldalra
     window.location.href = 'index.html';
 });
 
