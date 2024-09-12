@@ -99,6 +99,7 @@ pauseButton.addEventListener('click', () => {
     pauseButton.classList.add('disabled'); // Pause gomb állapotának módosítása
     resumeButton.classList.remove('disabled'); // Resume gomb engedélyezése
     resetButton.classList.add('disabled'); // Reset gomb letiltása
+    speechSynthesis.cancel(); // A felolvasás megszakítása
 });
 
 // Resume funkció
