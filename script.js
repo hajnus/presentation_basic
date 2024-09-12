@@ -3,7 +3,7 @@ console.log("A script.js fájl sikeresen betöltődött.");
 
 // Generáljunk 45 slide-ot, egyelőre ugyanazokkal a placeholder képekkel és szövegekkel
 const images = Array.from({ length: 45 }, (_, i) => ({
-    src: `https://via.placeholder.com/1000x600?text=Kép+${i+1}`,
+    src: `https://via.placeholder.com/1600x900?text=Kép+${i+1}`,
     text: `Ez a(z) ${i + 1}. kép. <span class="highlight">Ez kiemelt szöveg.</span>`
 }));
 
@@ -27,6 +27,18 @@ function updateThumbnails() {
     document.querySelectorAll('.thumbnails img').forEach((thumb, index) => {
         thumb.classList.toggle('active', index === currentIndex);
     });
+    centerThumbnail(currentIndex); // Thumbnail sáv középre igazítása
+}
+
+// A thumbnail középre helyezése
+function centerThumbnail(index) {
+    const thumbnail = document.querySelectorAll('.thumbnails img')[index];
+    const thumbnailWidth = thumbnail.clientWidth;
+    const thumbnailsWidth = thumbnailsContainer.clientWidth;
+    const thumbnailPosition = thumbnail.offsetLeft;
+    
+    // A thumbnail sávot úgy görgetjük, hogy a kiválasztott thumbnail középen legyen
+    thumbnailsContainer.scrollLeft = thumbnailPosition - (thumbnailsWidth / 2) + (thumbnailWidth / 2);
 }
 
 // Diavetítés frissítése
@@ -53,7 +65,7 @@ function speakText(text) {
     utterance.onend = () => {
         isSpeaking = false; // Szöveg befejeződött, folytatódhat a lejátszás
         if (!isPaused) {
-            nextSlide();
+            nextSlide(); // Amint végez a felolvasással, automatikusan megy a következőre
         }
     };
 
