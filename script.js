@@ -16,6 +16,9 @@ const thumbnailsContainer = document.getElementById('thumbnails');
 const pauseButton = document.getElementById('pause');
 const resumeButton = document.getElementById('resume');
 const resetButton = document.getElementById('reset');
+const nextButton = document.getElementById('nextImage');
+const previousButton = document.getElementById('previousImage');
+const homeButton = document.getElementById('home');
 
 // Thumbnails generálása
 images.forEach((image, index) => {
@@ -91,7 +94,7 @@ function previousSlide() {
 }
 
 // Pause funkció (Stop felirat)
-stopButton.addEventListener('click', () => {
+pauseButton.addEventListener('click', () => {
     isPaused = true;
     pauseButton.classList.add('disabled'); // Stop gomb állapotának módosítása
     resumeButton.classList.remove('disabled'); // Play gomb engedélyezése
@@ -123,9 +126,9 @@ resetButton.addEventListener('click', () => {
     }
 });
 
-document.getElementById('nextImage').addEventListener('click', nextSlide);
-document.getElementById('previousImage').addEventListener('click', previousSlide);
-document.getElementById('home').addEventListener('click', () => {
+nextButton.addEventListener('click', nextSlide);
+previousButton.addEventListener('click', previousSlide);
+homeButton.addEventListener('click', () => {
     // Itt visszairányíthatod a főoldalra
     window.location.href = 'index.html';
 });
