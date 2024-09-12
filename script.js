@@ -11,12 +11,14 @@ let isSpeaking = false; // Azt jelzi, hogy a szöveg felolvasása folyamatban va
 const currentImage = document.getElementById('currentImage');
 const currentText = document.getElementById('currentText');
 const thumbnailsContainer = document.getElementById('thumbnails');
-const pauseResumeButton = document.getElementById('pause');
+const pauseButton = document.getElementById('pause');
+const resumeButton = document.getElementById('resume');
 
 // Thumbnails generálása
 images.forEach((image, index) => {
     const thumb = document.createElement('img');
     thumb.src = image.src;
+    thumb.dataset.index = index; // Tároljuk az indexet a thumbnailen
     thumb.addEventListener('click', () => showSlide(index));
     thumbnailsContainer.appendChild(thumb);
 });
@@ -28,12 +30,11 @@ function updateThumbnails() {
     centerThumbnail(currentIndex); // Thumbnail sáv középre igazítása
 }
 
-// A thumbnail középre helyezése
 function centerThumbnail(index) {
-    const thumbnail = document.querySelectorAll('.thumbnails img')[index];
-    const thumbnailWidth = thumbnail.clientWidth;
+    const thumbnails = document.querySelectorAll('.thumbnails img');
+    const thumbnailWidth = thumbnails[0].clientWidth;
     const thumbnailsWidth = thumbnailsContainer.clientWidth;
-    const thumbnailPosition = thumbnail.offsetLeft;
+    const thumbnailPosition = thumbnails[index].offsetLeft;
     
     // A thumbnail sávot úgy görgetjük, hogy a kiválasztott thumbnail középen legyen
     thumbnailsContainer.scrollLeft = thumbnailPosition - (thumbnailsWidth / 2) + (thumbnailWidth / 2);
@@ -83,15 +84,20 @@ function previousSlide() {
     showSlide(currentIndex);
 }
 
-// Pause/Resume funkció
-pauseResumeButton.addEventListener('click', () => {
-    isPaused = !isPaused;
-    pauseResumeButton.textContent = isPaused ? 'Resume' : 'Pause'; // Gomb szövegének frissítése
-    if (!isPaused) {
-        nextSlide();
-    } else {
-        speechSynthesis.cancel(); // A felolvasás megszakítása szünetnél
-    }
+// Pause funkció
+pauseButton.addEventListener('click', () => {
+    isPaused = true;
+    pauseButton.disabled = true; // Pause gomb letiltása, amíg szünetel
+    resumeButton.disabled = false; // Resume gomb engedélyezése
+    speechSynthesis.cancel(); // A felolvasás megszakítása szünetnél
+});
+
+// Resume funkció
+resumeButton.addEventListener('click', () => {
+    isPaused = false;
+    pauseButton.disabled = false; // Pause gomb engedélyezése
+    resumeButton.disabled = true; // Resume gomb letiltása, amíg fut
+    nextSlide(); // Folytatás a következő képpel
 });
 
 document.getElementById('nextImage').addEventListener('click', nextSlide);
