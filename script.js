@@ -13,8 +13,8 @@ let isSpeaking = false; // Azt jelzi, hogy a szöveg felolvasása folyamatban va
 const currentImage = document.getElementById('currentImage');
 const currentText = document.getElementById('currentText');
 const thumbnailsContainer = document.getElementById('thumbnails');
-const stopButton = document.getElementById('stop');
-const playButton = document.getElementById('play');
+const pauseButton = document.getElementById('stop');
+const resumeButton = document.getElementById('play');
 const resetButton = document.getElementById('reset');
 
 // Thumbnails generálása
