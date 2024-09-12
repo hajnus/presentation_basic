@@ -25,7 +25,12 @@ images.forEach((image, index) => {
     const thumb = document.createElement('img');
     thumb.src = image.src;
     thumb.dataset.index = index; // Tároljuk az indexet a thumbnailen
-    thumb.addEventListener('click', () => showSlide(index));
+    thumb.addEventListener('click', () => {
+        showSlide(index);
+        if (!isPaused) {
+            speakText(images[index].text);
+        }
+    });
     thumbnailsContainer.appendChild(thumb);
 });
 
@@ -53,7 +58,9 @@ function showSlide(index) {
     currentImage.src = images[currentIndex].src;
     currentText.innerHTML = images[currentIndex].text;
     updateThumbnails();
-    speakText(images[currentIndex].text);
+    if (!isPaused) {
+        speakText(images[currentIndex].text);
+    }
 }
 
 // Magyar férfi hang beállítása
@@ -126,8 +133,20 @@ resetButton.addEventListener('click', () => {
     }
 });
 
-nextButton.addEventListener('click', nextSlide);
-previousButton.addEventListener('click', previousSlide);
+nextButton.addEventListener('click', () => {
+    nextSlide();
+    if (!isPaused) {
+        speakText(images[currentIndex].text);
+    }
+});
+
+previousButton.addEventListener('click', () => {
+    previousSlide();
+    if (!isPaused) {
+        speakText(images[currentIndex].text);
+    }
+});
+
 homeButton.addEventListener('click', () => {
     // Itt visszairányíthatod a főoldalra
     window.location.href = 'index.html';
@@ -135,3 +154,4 @@ homeButton.addEventListener('click', () => {
 
 // Induláskor az első kép megjelenítése
 showSlide(0);
+Módosítások:
