@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("A script.js fájl sikeresen betöltődött.");
 
-const images = Array.from({length: 45}, (_, i) => `https://picsum.photos/1600/900?random=${i}`); // 45 random kép    
+    const images = Array.from({length: 45}, () => 'https://via.placeholder.com/1600x900'); // Egy alapértelmezett kép
     const texts = Array.from({length: 45}, (_, i) => `Szöveg a ${i+1}. képhez.`); // Add texts
 
     let currentIndex = 0;
