@@ -13,9 +13,9 @@ let isSpeaking = false; // Azt jelzi, hogy a szöveg felolvasása folyamatban va
 const currentImage = document.getElementById('currentImage');
 const currentText = document.getElementById('currentText');
 const thumbnailsContainer = document.getElementById('thumbnails');
-const pauseButton = document.getElementById('pause');
-const resumeButton = document.getElementById('resume');
-const resetButton = document.getElementById('restart');
+const stopButton = document.getElementById('stop');
+const playButton = document.getElementById('play');
+const resetButton = document.getElementById('reset');
 
 // Thumbnails generálása
 images.forEach((image, index) => {
@@ -84,24 +84,26 @@ function nextSlide() {
 }
 
 function previousSlide() {
-    currentIndex = (currentIndex - 1 + images.length) % images.length;
-    showSlide(currentIndex);
+    if (!isPaused && !isSpeaking) {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        showSlide(currentIndex);
+    }
 }
 
-// Pause funkció
-pauseButton.addEventListener('click', () => {
+// Stop funkció
+stopButton.addEventListener('click', () => {
     isPaused = true;
-    pauseButton.classList.add('disabled'); // Pause gomb állapotának módosítása
-    resumeButton.classList.remove('disabled'); // Resume gomb engedélyezése
+    stopButton.classList.add('disabled'); // Stop gomb állapotának módosítása
+    playButton.classList.remove('disabled'); // Play gomb engedélyezése
     resetButton.classList.add('disabled'); // Reset gomb letiltása
-    speechSynthesis.cancel(); // A felolvasás megszakítása szünetnél
+    speechSynthesis.cancel(); // A felolvasás megszakítása
 });
 
-// Resume funkció
-resumeButton.addEventListener('click', () => {
+// Play funkció
+playButton.addEventListener('click', () => {
     isPaused = false;
-    pauseButton.classList.remove('disabled'); // Pause gomb engedélyezése
-    resumeButton.classList.add('disabled'); // Resume gomb letiltása
+    stopButton.classList.remove('disabled'); // Stop gomb engedélyezése
+    playButton.classList.add('disabled'); // Play gomb letiltása
     resetButton.classList.remove('disabled'); // Reset gomb engedélyezése
     nextSlide(); // Folytatás a következő képpel
 });
@@ -111,8 +113,8 @@ resetButton.addEventListener('click', () => {
     isPaused = false;
     currentIndex = 0;
     showSlide(currentIndex);
-    pauseButton.classList.remove('disabled'); // Pause gomb engedélyezése
-    resumeButton.classList.add('disabled'); // Resume gomb letiltása
+    stopButton.classList.remove('disabled'); // Stop gomb engedélyezése
+    playButton.classList.add('disabled'); // Play gomb letiltása
     resetButton.classList.add('disabled'); // Reset gomb állapotának módosítása
     if (!isSpeaking) {
         nextSlide(); // Folytatás a következő képpel a reset után
