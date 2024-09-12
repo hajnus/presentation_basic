@@ -1,5 +1,3 @@
-console.log("A script.js fájl sikeresen betöltődött.");
-
 // Generáljunk 45 slide-ot, egyelőre ugyanazokkal a placeholder képekkel és szövegekkel
 const images = Array.from({ length: 45 }, (_, i) => ({
     src: `https://via.placeholder.com/1600x900?text=Kép+${i+1}`,
