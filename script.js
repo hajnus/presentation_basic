@@ -1,83 +1,92 @@
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("A script.js fájl sikeresen betöltődött.");
+console.log("A script.js fájl sikeresen betöltődött.");
 
-    const images = Array.from({length: 45}, () => 'https://via.placeholder.com/1600x900'); // Egy alapértelmezett kép
-    const texts = Array.from({length: 45}, (_, i) => `Szöveg a ${i+1}. képhez.`); // Add texts
+// Adatok placeholder
+const images = Array.from({ length: 45 }, (_, i) => `image${i + 1}.jpg`);
+const texts = Array.from({ length: 45 }, (_, i) => `Text for image ${i + 1}`);
 
-    let currentIndex = 0;
-    let isPaused = false;
-    let timer;
+// Elemenek
+const currentImage = document.getElementById('currentImage');
+const currentText = document.getElementById('currentText');
+const thumbnails = document.getElementById('thumbnails');
+const previousButton = document.getElementById('previousImage');
+const nextButton = document.getElementById('nextImage');
+const pauseButton = document.getElementById('pause');
+const resumeButton = document.getElementById('resume');
+const resetButton = document.getElementById('reset');
+const homeButton = document.getElementById('home');
 
-    const imageElement = document.getElementById("currentImage");
-    const textElement = document.getElementById("currentText");
-    const previousButton = document.getElementById("previousImage");
-    const nextButton = document.getElementById("nextImage");
-    const pauseButton = document.getElementById("pause");
-    const resumeButton = document.getElementById("resume");
-    const resetButton = document.getElementById("reset");
-    const homeButton = document.getElementById("home");
+let currentIndex = 0;
+let intervalId;
+let isPaused = false;
 
-    function showImageAndText(index) {
-        if (index < 0 || index >= images.length) return;
+// Kép és szöveg frissítése
+function updateContent() {
+    currentImage.src = images[currentIndex];
+    currentText.textContent = texts[currentIndex];
+    updateThumbnails();
+}
 
-        imageElement.src = images[index];
-        textElement.textContent = texts[index];
+// Thumbnailok frissítése
+function updateThumbnails() {
+    thumbnails.innerHTML = '';
+    images.forEach((image, index) => {
+        const img = document.createElement('img');
+        img.src = image;
+        img.className = index === currentIndex ? 'active' : '';
+        img.addEventListener('click', () => {
+            currentIndex = index;
+            updateContent();
+        });
+        thumbnails.appendChild(img);
+    });
+}
 
-        const utterance = new SpeechSynthesisUtterance(texts[index]);
-        speechSynthesis.speak(utterance);
+// Diavetítés előre
+function nextImage() {
+    currentIndex = (currentIndex + 1) % images.length;
+    updateContent();
+}
 
-        utterance.onend = () => {
-            if (!isPaused) {
-                nextImage();
-            }
-        };
-    }
+// Diavetítés hátra
+function previousImage() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    updateContent();
+}
 
-    function nextImage() {
-        currentIndex = (currentIndex + 1) % images.length;
-        showImageAndText(currentIndex);
-    }
+// Diavetítés leállítása
+function pauseSlideshow() {
+    clearInterval(intervalId);
+    isPaused = true;
+}
 
-    function previousImage() {
-        currentIndex = (currentIndex - 1 + images.length) % images.length;
-        showImageAndText(currentIndex);
-    }
-
-    function pauseSlideshow() {
-        isPaused = true;
-        clearTimeout(timer);
-        // Update button states
-        pauseButton.classList.add("disabled");
-        resumeButton.classList.remove("disabled");
-    }
-
-    function resumeSlideshow() {
+// Diavetítés folytatása
+function resumeSlideshow() {
+    if (isPaused) {
+        intervalId = setInterval(nextImage, 3000);
         isPaused = false;
-        nextImage(); // Continue with the next image
-        // Update button states
-        pauseButton.classList.remove("disabled");
-        resumeButton.classList.add("disabled");
     }
+}
 
-    function resetSlideshow() {
-        currentIndex = 0;
-        showImageAndText(currentIndex);
-        isPaused = false;
-        pauseButton.classList.remove("disabled");
-        resumeButton.classList.add("disabled");
-    }
+// Diavetítés visszaállítása
+function resetSlideshow() {
+    clearInterval(intervalId);
+    currentIndex = 0;
+    updateContent();
+    resumeSlideshow();
+}
 
-    function goHome() {
-        window.location.href = "index.html"; // Or whatever your home page is
-    }
+// Kezdő időzítő
+intervalId = setInterval(nextImage, 3000);
 
-    previousButton.addEventListener("click", previousImage);
-    nextButton.addEventListener("click", nextImage);
-    pauseButton.addEventListener("click", pauseSlideshow);
-    resumeButton.addEventListener("click", resumeSlideshow);
-    resetButton.addEventListener("click", resetSlideshow);
-    homeButton.addEventListener("click", goHome);
-
-    // Initialize with the first image and text
-    showImageAndText(currentIndex);
+// Eseménykezelők
+previousButton.addEventListener('click', previousImage);
+nextButton.addEventListener('click', nextImage);
+pauseButton.addEventListener('click', pauseSlideshow);
+resumeButton.addEventListener('click', resumeSlideshow);
+resetButton.addEventListener('click', resetSlideshow);
+homeButton.addEventListener('click', () => {
+    window.location.href = 'index.html'; // Változtasd meg az otthoni oldal URL-jét
 });
+
+// Kezdeti tartalom frissítése
+updateContent();
