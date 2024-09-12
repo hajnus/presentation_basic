@@ -13,8 +13,8 @@ let isSpeaking = false; // Azt jelzi, hogy a szöveg felolvasása folyamatban va
 const currentImage = document.getElementById('currentImage');
 const currentText = document.getElementById('currentText');
 const thumbnailsContainer = document.getElementById('thumbnails');
-const pauseButton = document.getElementById('stop');
-const resumeButton = document.getElementById('play');
+const pauseButton = document.getElementById('pause');
+const resumeButton = document.getElementById('resume');
 const resetButton = document.getElementById('reset');
 
 // Thumbnails generálása
@@ -93,17 +93,17 @@ function previousSlide() {
 // Pause funkció (Stop felirat)
 stopButton.addEventListener('click', () => {
     isPaused = true;
-    stopButton.classList.add('disabled'); // Stop gomb állapotának módosítása
-    playButton.classList.remove('disabled'); // Play gomb engedélyezése
+    pauseButton.classList.add('disabled'); // Stop gomb állapotának módosítása
+    resumeButton.classList.remove('disabled'); // Play gomb engedélyezése
     resetButton.classList.add('disabled'); // Reset gomb letiltása
     speechSynthesis.cancel(); // A felolvasás megszakítása
 });
 
 // Resume funkció (Play felirat)
-playButton.addEventListener('click', () => {
+resumeButton.addEventListener('click', () => {
     isPaused = false;
-    stopButton.classList.remove('disabled'); // Stop gomb engedélyezése
-    playButton.classList.add('disabled'); // Play gomb letiltása
+    pauseButton.classList.remove('disabled'); // Stop gomb engedélyezése
+    resumeButton.classList.add('disabled'); // Play gomb letiltása
     resetButton.classList.remove('disabled'); // Reset gomb engedélyezése
     if (!isSpeaking) {
         nextSlide(); // Folytatás a következő képpel
@@ -115,8 +115,8 @@ resetButton.addEventListener('click', () => {
     isPaused = false;
     currentIndex = 0;
     showSlide(currentIndex);
-    stopButton.classList.remove('disabled'); // Stop gomb engedélyezése
-    playButton.classList.add('disabled'); // Play gomb letiltása
+    pauseButton.classList.remove('disabled'); // Stop gomb engedélyezése
+    resumeButton.classList.add('disabled'); // Play gomb letiltása
     resetButton.classList.add('disabled'); // Reset gomb állapotának módosítása
     if (!isSpeaking) {
         nextSlide(); // Folytatás a következő képpel a reset után
