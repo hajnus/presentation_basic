@@ -12,13 +12,19 @@
             text-align: center;
         }
         .image-container img {
-            max-width: 500px;
-            max-height: 300px;
+            max-width: 1000px; /* A képek kétszer nagyobbak */
+            max-height: 600px;
+        }
+        .thumbnails-wrapper {
+            width: 100%; /* Kép szélessége */
+            overflow-x: auto; /* Vízszintes görgetés engedélyezése */
         }
         .thumbnails {
             display: flex;
             justify-content: center;
             margin-top: 10px;
+            max-width: 1000px;
+            margin: 0 auto; /* Thumbnail középre igazítása */
         }
         .thumbnails img {
             width: 60px;
@@ -44,8 +50,10 @@
             <img id="currentImage" src="" alt="Slideshow Image">
         </div>
         <p id="currentText"></p>
-        <div class="thumbnails" id="thumbnails">
-            <!-- Thumbnails will be inserted here -->
+        <div class="thumbnails-wrapper">
+            <div class="thumbnails" id="thumbnails">
+                <!-- Thumbnails will be inserted here -->
+            </div>
         </div>
         <div class="controls">
             <button id="previousTask">Previous Task</button>
