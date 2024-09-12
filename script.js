@@ -1,8 +1,15 @@
 console.log("A script.js fájl sikeresen betöltődött.");
 
-// Adatok placeholder
-const images = Array.from({length: 45}, () => 'https://via.placeholder.com/1600x900'); // Egy alapértelmezett kép
-const texts = Array.from({ length: 45 }, (_, i) => `Text for image ${i + 1}`);
+// Generáljunk 45 slide-ot, egyelőre ugyanazokkal a placeholder képekkel és szövegekkel
+const images = Array.from({ length: 45 }, (_, i) => ({
+    src: `https://via.placeholder.com/1600x900?text=Kép+${i+1}`,
+    text: `Ez a(z) ${i + 1}. kép. <span class="highlight">Ez kiemelt szöveg.</span>`
+}));
+
+let currentIndex = 0;
+let isPaused = false;
+let isSpeaking = false; // Azt jelzi, hogy a szöveg felolvasása folyamatban van
+let currentUtterance = null; // Aktuális felolvasás tárolása
 
 // Elemenek
 const currentImage = document.getElementById('currentImage');
