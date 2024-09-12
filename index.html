@@ -12,23 +12,23 @@
             text-align: center;
         }
         .image-container img {
-            max-width: 1000px; /* A képek kétszer nagyobbak */
-            max-height: 600px;
+            max-width: 1600px; /* Kétszer nagyobb képméret */
+            max-height: 900px;
         }
         .thumbnails-wrapper {
-            width: 100%; /* Kép szélessége */
-            overflow-x: auto; /* Vízszintes görgetés engedélyezése */
+            width: 1600px; /* A thumbnail sáv a nagy kép méretével egyezik */
+            overflow-x: hidden; /* Elrejtjük a kilógó thumbnailokat */
+            margin: 0 auto;
         }
         .thumbnails {
             display: flex;
             justify-content: center;
             margin-top: 10px;
-            max-width: 1000px;
-            margin: 0 auto; /* Thumbnail középre igazítása */
+            position: relative; /* A thumbnailokat itt pozícionáljuk */
         }
         .thumbnails img {
-            width: 60px;
-            height: 40px;
+            width: 100px;
+            height: 60px;
             margin: 0 5px;
             cursor: pointer;
         }
