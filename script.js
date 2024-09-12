@@ -15,6 +15,7 @@ const currentText = document.getElementById('currentText');
 const thumbnailsContainer = document.getElementById('thumbnails');
 const pauseButton = document.getElementById('pause');
 const resumeButton = document.getElementById('resume');
+const resetButton = document.getElementById('restart');
 
 // Thumbnails generálása
 images.forEach((image, index) => {
@@ -26,7 +27,8 @@ images.forEach((image, index) => {
 });
 
 function updateThumbnails() {
-    document.querySelectorAll('.thumbnails img').forEach((thumb, index) => {
+    const thumbnails = document.querySelectorAll('.thumbnails img');
+    thumbnails.forEach((thumb, index) => {
         thumb.classList.toggle('active', index === currentIndex);
     });
     centerThumbnail(currentIndex); // Thumbnail sáv középre igazítása
@@ -37,7 +39,7 @@ function centerThumbnail(index) {
     const thumbnailWidth = thumbnails[0].clientWidth;
     const thumbnailsWidth = thumbnailsContainer.clientWidth;
     const thumbnailPosition = thumbnails[index].offsetLeft;
-    
+
     // A thumbnail sávot úgy görgetjük, hogy a kiválasztott thumbnail középen legyen
     thumbnailsContainer.scrollLeft = thumbnailPosition - (thumbnailsWidth / 2) + (thumbnailWidth / 2);
 }
@@ -89,24 +91,36 @@ function previousSlide() {
 // Pause funkció
 pauseButton.addEventListener('click', () => {
     isPaused = true;
-    pauseButton.disabled = true; // Pause gomb letiltása, amíg szünetel
-    resumeButton.disabled = false; // Resume gomb engedélyezése
+    pauseButton.classList.add('disabled'); // Pause gomb állapotának módosítása
+    resumeButton.classList.remove('disabled'); // Resume gomb engedélyezése
+    resetButton.classList.add('disabled'); // Reset gomb letiltása
     speechSynthesis.cancel(); // A felolvasás megszakítása szünetnél
 });
 
 // Resume funkció
 resumeButton.addEventListener('click', () => {
     isPaused = false;
-    pauseButton.disabled = false; // Pause gomb engedélyezése
-    resumeButton.disabled = true; // Resume gomb letiltása, amíg fut
+    pauseButton.classList.remove('disabled'); // Pause gomb engedélyezése
+    resumeButton.classList.add('disabled'); // Resume gomb letiltása
+    resetButton.classList.remove('disabled'); // Reset gomb engedélyezése
     nextSlide(); // Folytatás a következő képpel
+});
+
+// Reset funkció
+resetButton.addEventListener('click', () => {
+    isPaused = false;
+    currentIndex = 0;
+    showSlide(currentIndex);
+    pauseButton.classList.remove('disabled'); // Pause gomb engedélyezése
+    resumeButton.classList.add('disabled'); // Resume gomb letiltása
+    resetButton.classList.add('disabled'); // Reset gomb állapotának módosítása
+    if (!isSpeaking) {
+        nextSlide(); // Folytatás a következő képpel a reset után
+    }
 });
 
 document.getElementById('nextImage').addEventListener('click', nextSlide);
 document.getElementById('previousImage').addEventListener('click', previousSlide);
-document.getElementById('restart').addEventListener('click', () => {
-    showSlide(0);
-});
 document.getElementById('home').addEventListener('click', () => {
     // Itt visszairányíthatod a főoldalra
     window.location.href = 'index.html';
