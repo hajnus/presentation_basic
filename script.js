@@ -88,7 +88,7 @@ function previousSlide() {
     }
 }
 
-// Stop funkció
+// Pause funkció (Stop felirat)
 stopButton.addEventListener('click', () => {
     isPaused = true;
     stopButton.classList.add('disabled'); // Stop gomb állapotának módosítása
@@ -97,13 +97,15 @@ stopButton.addEventListener('click', () => {
     speechSynthesis.cancel(); // A felolvasás megszakítása
 });
 
-// Play funkció
+// Resume funkció (Play felirat)
 playButton.addEventListener('click', () => {
     isPaused = false;
     stopButton.classList.remove('disabled'); // Stop gomb engedélyezése
     playButton.classList.add('disabled'); // Play gomb letiltása
     resetButton.classList.remove('disabled'); // Reset gomb engedélyezése
-    nextSlide(); // Folytatás a következő képpel
+    if (!isSpeaking) {
+        nextSlide(); // Folytatás a következő képpel
+    }
 });
 
 // Reset funkció
