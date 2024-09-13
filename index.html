@@ -66,6 +66,7 @@
             margin: 5px;
             background-color: lightgreen;
             color: black;
+            font-weight: bold; /* Vastag betű minden gombon */
         }
 
         button.active {
@@ -77,16 +78,9 @@
             background-color: black;
             color: white;
         }
-#resume::before {
-    content: "Resume / ";
+.small-text {
     font-size: 0.8em;
 }
-
-#restart::before {
-    content: "Restart / ";
-    font-size: 0.8em;
-}
-
     </style>
 </head>
 <body>
@@ -104,6 +98,8 @@
             <button id="previousImage">Previous</button>
             <button id="nextImage">Next</button>
             <button id="pause">Pause</button>
+            <button id="resume"><span class="small-text">Resume</span> Play</button>
+            <button id="reset"><span class="small-text">Restart</span> Start</button>
             <button id="resume">Resume / Play</button>
             <button id="reset">Reset / Start</button>
             <button id="home">Home</button>
