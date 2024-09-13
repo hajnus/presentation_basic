@@ -62,15 +62,20 @@
             border-radius: 15px; /* Kerekített sarkok 15px */
             padding: 10px 20px;
             font-size: 16px;
-            font-weight: bold; /* Vastag betű minden gombon */
+    font-weight: normal; /* Nem vastag betűs */
             text-transform: uppercase; /* Minden szöveg nagybetűs lesz */
+    vertical-align: middle; /* Igazítás a sor közepére */
+    display: inline-block; /* Hogy a vertical-align működjön */
             cursor: pointer;
             margin: 5px;
             background-color: lightgreen;
             color: black;
         }
 
-/*        button.active {
+button:hover {
+    transform: scale(1.1); /* A gomb méretének növelése 10%-kal */
+}
+        /*        button.active {
             background-color: black;
             color: white;
         }
